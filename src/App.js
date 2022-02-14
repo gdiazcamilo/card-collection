@@ -1,12 +1,15 @@
 import React, { Component } from "react";
+
 import "./App.css";
+
 import { CardList } from "./components/card-list/card-list.component";
+import { SearchBox } from "./components/search-box/search-box.component";
 
 class App extends Component {
   constructor() {
     super();
 
-    this.state = { monsters: [] };
+    this.state = { monsters: [], searchField: "" };
   }
 
   loadMonstersWithThenSyntax() {
@@ -27,10 +30,23 @@ class App extends Component {
     this.loadMonstersWithThenSyntax();
   }
 
+  handleChange = (e) => {
+    this.setState({ searchField: e.target.value });
+  };
+
   render() {
+    const filteredMonsters = this.state.monsters.filter((m) =>
+      m.name.toLowerCase().includes(this.state.searchField)
+    );
+
     return (
       <div className='App'>
-        <CardList monsters={this.state.monsters} />
+        <h1>Robot cards</h1>
+        <SearchBox
+          placeholder='monster name'
+          handleChange={this.handleChange}
+        />
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }
